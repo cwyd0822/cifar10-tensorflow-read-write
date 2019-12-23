@@ -72,10 +72,16 @@ classification = ['airplane',
                   'truck']
 
 
+# pickle用于序列化
+# 用于python特有的类型和python的数据类型间进行转换
+# pickle提供四个功能：dumps,dump,loads,load
+# pickle可以存储的数据类型
+# - 所有python支持的原生类型：布尔值，整数，浮点数，复数，字符串，字节，None。
+# - 由任何原生类型组成的列表，元组，字典和集合。
+# - 函数，类，类的实例
 def unpickle(file):
-    import pickle
-    with open(file, 'rb') as fo:
-        dict = pickle.load(fo, encoding='bytes')
+    with open(file, 'rb') as fo:  # 打开文件
+        dict = pickle.load(fo, encoding='bytes')  # 是以字典的方式序列化数据
     return dict
 
 
@@ -85,31 +91,44 @@ def unpickle(file):
 
 # download_and_uncompress_tarball(DATA_URL, DATA_DIR)
 
-'''
-folders = '/home/aiserver/muke/data_manager/data/cifar-10-batches-py'
+# 选择cifar10的路径，用相对路径
+folders = 'data/cifar-10-batches-py'
 
-trfiles = glob.glob(folders + "/test_batch*")
+# 获取目录下所有匹配到的训练集文件
+trfiles = glob.glob(folders + "/data_batch*")
 
-data  = []
-labels = []
-for file in trfiles:
-    dt = unpickle(file)
-    data += list(dt[b"data"])
+data = []  # 二进制的数据
+labels = []  # 标签列表
+for file in trfiles:  # 对于每个文件
+    dt = unpickle(file)  # 得到反序列化后的数据 {"data": [byte], "labels": [int8]}
+    data += list(dt[b"data"])  # 转化为list
     labels += list(dt[b"labels"])
 
+# labels形如[1, 2, 3, 4, 6, ...]
+# data 形如：... array([163, 173, 158, ..., 101, 100,  95], dtype=uint8) ...
 print(labels)
+print(len(data))
 
+# 3通道32*32的图像数据
+# [-1, 3, 32, 32]表示将data重新整理成3*32*32的图片，-1表示转化的数量根据实际情况确定
+# numpy.reshape(a, newshape)
+# a : 数组——需要处理的数据。
+# 新的格式——整数或整数数组，如(2,3)表示2行3列。新的形状应该与原来的形状兼容，即行数和列数相乘后等于a中元素的数量。如果是整数，则结果将是长度的一维数组，所以这个整数必须等于a中元素数量。若这里是一个整数数组，那么其中一个数据可以为-1。在这种情况下，这个个值python会自动从根据第二个数值和剩余维度推断出来。
 imgs = np.reshape(data, [-1, 3, 32, 32])
 
+# 遍历所有图片
+# imgs.shape[0]表示图片的数量
 for i in range(imgs.shape[0]):
     im_data = imgs[i, ...]
-    im_data = np.transpose(im_data, [1, 2, 0])
-    im_data = cv2.cvtColor(im_data, cv2.COLOR_RGB2BGR)
+    im_data = np.transpose(im_data, [1, 2, 0])  # 修改通道顺序，把通道移动到最后[32, 32, 3]
+    im_data = cv2.cvtColor(im_data, cv2.COLOR_RGB2BGR)  # 修改图像通道为BGR
 
-    f = "{}/{}".format("data/image/test", classification[labels[i]])
+    # 把图像数据写成文件: data/image/test/airplane
+    f = "{}/{}".format("data/image/train", classification[labels[i]])
 
+    # 确保文件夹存在
     if not os.path.exists(f):
         os.mkdir(f)
 
+    # 文件名形如：data/image/test/airplane/1.jpg
     cv2.imwrite("{}/{}.jpg".format(f, str(i)), im_data)
-'''
