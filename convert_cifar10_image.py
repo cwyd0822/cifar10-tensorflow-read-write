@@ -1,3 +1,7 @@
+"""
+本脚本对cifar10数据进行解析，转换成图片，生成训练图片和测试图片。
+"""
+
 import urllib.request
 import os
 import sys
@@ -86,7 +90,6 @@ def unpickle(file):
 
 
 # DATA_URL = 'http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz'
-# DATA_URL = 'http://aichenwei.oss-ap-southeast-1.aliyuncs.com/github/cifar-10-python.tar.gz'
 # DATA_DIR = 'data'
 
 # download_and_uncompress_tarball(DATA_URL, DATA_DIR)
@@ -130,5 +133,5 @@ for i in range(imgs.shape[0]):
     if not os.path.exists(f):
         os.mkdir(f)
 
-    # 文件名形如：data/image/test/airplane/1.jpg
+    # 文件名形如：data/image/train/airplane/1.jpg
     cv2.imwrite("{}/{}.jpg".format(f, str(i)), im_data)
