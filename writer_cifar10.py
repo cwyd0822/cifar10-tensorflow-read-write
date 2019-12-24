@@ -44,7 +44,7 @@ print(im_labels)
 # 下面生成.tfrecord文件
 tfrecord_file = "data/train.tfrecord"
 # 利用TFRecordWriter写入到文件中
-writer = tf.compat.v1.python_io.TFRecordWriter(tfrecord_file)
+writer = tf.python_io.TFRecordWriter(tfrecord_file)
 
 index = [i for i in range(im_data.__len__())]
 
