@@ -56,6 +56,7 @@ for i in range(im_data.__len__()):
     im_l = im_labels[index[i]]
     # opencv对图片进行读取
     data = cv2.imread(im_d)
+    # 也可以通过这种方式读取图片数据，本身就是byte格式的
     # data = tf.gfile.FastGFile(im_d, "rb").read()
     ex = tf.train.Example(
         # Features是用于描述机器学习模型训练或推理的特征的协议消息，用键值对表示数据。
@@ -75,3 +76,4 @@ for i in range(im_data.__len__()):
     writer.write(ex.SerializeToString())
 # 关闭writer
 writer.close()
+
