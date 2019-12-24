@@ -40,3 +40,8 @@ python3 convert_cifar10_image.py
 ```
 这样脚本会自动下载数据，并且转换成图片。其中训练数据在data/image/train目录下。
 如果在线下载比较慢，可以通过百度网盘先将数据集下载到项目根目录下，再执行这个convert_cifar10_image.py脚本，这样会自动跳过从网络上下载。
+
+## tf.train.slice_input_producer()函数
+详细说明请访问[《详解tensorflow的tf.train.slice_input_producer文件队列tensor生成器》](https://blog.csdn.net/keyandi/article/details/103683761)
+
+代码参考：reader_cifar10-1.py
