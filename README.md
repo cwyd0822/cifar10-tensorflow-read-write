@@ -24,6 +24,7 @@
 
 ## 项目运行需要的环境
 - Python 3.7.4
+- TensorFlow 1.5.0
 
 ## 项目运行
 ### convert_cifar10_image.py
